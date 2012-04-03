@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="imagetoolbar" content="no" />
+	<meta name="content-language" content="kr" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+
+	<style>
+	body{font-size:12px;}
+	.road{background-image:url(road.jpg);height:50px;overflow:hidden;}
+	.step{background-image:url(trace_road.jpg);height:50px;width:0px;float:left;}
+	.road img{float:left}
+	.rankBg{background-image:url(rank_bg.png);height:37px;width:37px; float:left;text-align:center;}
+	.rankBg div{padding-top:10px}
+
+
+	</style>
+
+	<script type="text/javascript">
+	<!--
+	var interval = null;
+
+	var rank = Array();
+	var maxRoad = 1;
+
+	var runSeq = 0;
+
+	var horse = Array();
+
+function startRace(){
+
+
+		var cnt = Number( $("#playerCount").val() );
+		for(var i=0;i<cnt;i++){
+			horse[i] = 0;
+		}
+
+
+
+		$("#goRun").hide();
+
+		$(".horseImage").attr("src","horse_run.gif");
+
+		if(interval != null) return;
+
+		interval = setInterval(function(){
+
+
+			var seq = 0;
+
+			$(".road .step").each(function(){
+
+				if(horse[ seq ] == null)
+					horse[ seq ] = 0;
+
+				var myPoint = horse[ seq ];
+
+				var rnd = Math.floor( Math.random()*100%20 );
+
+				// 꼴지를 위한 보너스
+				if(horse[seq] != 0){
+
+					var my = horse[seq];
+					var isMin = true;
+					for(var i=0;i<horse.length;i++){
+						if( my > horse[i] ) isMin = false;
+					}
+
+					if(isMin == true){
+						var bonus = Math.floor( Math.random()*1000%20 ) >= 19 ? 30 : rnd ;
+
+						rnd = bonus;
+					}
+
+				}
+
+
+
+				horse[ seq ] = myPoint+rnd;
+
+				if(maxRoad <= horse[ seq ]) horse[ seq ] = maxRoad;
+
+
+				if( maxRoad <= horse[ seq ] ){
+
+					var rankIn = false;
+
+					for(var i=0;i< rank.length;i++){
+						if( rank[i] == seq ) rankIn = true;
+					}
+
+					if(rankIn == false){
+						rank[ rank.length ] = seq;
+
+					}else{
+						$(this).animate( {width:maxRoad},100);
+					}
+
+				}else{
+
+					$(this).animate( {width:horse[ seq ]},100);
+				}
+
+				seq ++;
+
+			});
+
+
+			if( rank.length == $(".road").length ){
+
+				clearInterval( interval );
+
+				interval = null;
+
+				$(".horseImage").attr("src","horse_stop.gif");
+
+
+				setTimeout(function(){
+
+				for(var i=0;i< rank.length;i++){
+
+					var rankBox = $("<div>").addClass("rankBg");
+
+					rankBox.append($("<div>").text( i+1 ));
+
+					$(".road").eq( rank[i] ).append(rankBox);
+				}
+
+				var message = "경기결과 : \n\n";
+
+				for(var i=0;i< rank.length;i++){
+
+					message += (i+1)+"위 : "+$(".nameText:eq("+rank[i]+")").val()+" \n";
+				}
+
+				message += "\n\n Sseq:"+runSeq;
+
+
+				$("#goRun").show();
+
+				alert(message);
+
+				},1000);
+			}
+
+
+
+
+			runSeq ++;
+
+		},100);
+
+
+}
+
+function setting(){
+
+
+	maxRoad = $("#stage").width()-100;
+
+	horse = null;
+	horse = Array();
+
+	rank = null
+	rank = Array();
+
+	if(interval != null)
+	clearInterval( interval );
+
+	interval = null;
+
+	$("#stage").html("");
+
+	var cnt = Number( $("#playerCount").val() );
+
+	var line ="<div class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\"/></div><div class='step'></div><img class='horseImage' src=\"horse_stop.gif\" height=37/></div>";
+
+	for(var i=0;i<cnt;i++){
+		$("#stage").append(line);
+
+		horse[i] = 0;
+	}
+
+}
+
+$(document).ready(function(){
+
+var heavyImage = new Image();
+heavyImage.src = "horse_stop.gif";
+
+var heavyImage1 = new Image();
+heavyImage1.src = "rank_bg.png";
+
+});
+	//-->
+	</script>
+
+
+
+
+	<title> new document </title>
+
+ </head>
+ <body>
+
+<div>
+
+	플레이어수 : <input type="text" id="playerCount"/> <button type="button" onclick="setting();">설정완료</button>
+
+</div>
+
+
+<div id="stage">
+
+
+
+</div>
+<center><button type="button" onclick="startRace()" id="goRun">달려라!!!</button></center>
+
+
+
+ </body>
+</html>
