@@ -6,14 +6,15 @@
 	<meta name="content-language" content="kr" />
 	<meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/horse.js"></script>
 
 	<style>
 	body{font-size:12px;}
-	.road{background-image:url(road.jpg);height:50px;overflow:hidden;}
-	.step{background-image:url(trace_road.jpg);height:50px;width:0px;float:left;}
+	.road{background-image:url(images/road.jpg);height:50px;overflow:hidden;}
+	.step{background-image:url(images/trace_road.jpg);height:50px;width:0px;float:left;}
 	.road img{float:left}
-	.rankBg{background-image:url(rank_bg.png);height:37px;width:37px; float:left;text-align:center;}
+	.rankBg{background-image:url(images/rank_bg.png);height:37px;width:37px; float:left;text-align:center;}
 	.rankBg div{padding-top:10px}
 
 
@@ -29,6 +30,9 @@
 	var runSeq = 0;
 
 	var horse = Array();
+	
+	var h1 = new HORSE("lee");
+	alert(h1.getHorseInfo());
 
 function startRace(){
 
@@ -42,7 +46,7 @@ function startRace(){
 
 		$("#goRun").hide();
 
-		$(".horseImage").attr("src","horse_run.gif");
+		$(".horseImage").attr("src","images/horse_run.gif");
 
 		if(interval != null) return;
 
@@ -115,7 +119,7 @@ function startRace(){
 
 				interval = null;
 
-				$(".horseImage").attr("src","horse_stop.gif");
+				$(".horseImage").attr("src","images/horse_stop.gif");
 
 
 				setTimeout(function(){
@@ -176,7 +180,7 @@ function setting(){
 
 	var cnt = Number( $("#playerCount").val() );
 
-	var line ="<div class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\"/></div><div class='step'></div><img class='horseImage' src=\"horse_stop.gif\" height=37/></div>";
+	var line ="<div class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\"/></div><div class='step'></div><img class='horseImage' src=\"images/horse_stop.gif\" height=37/></div>";
 
 	for(var i=0;i<cnt;i++){
 		$("#stage").append(line);
@@ -189,10 +193,10 @@ function setting(){
 $(document).ready(function(){
 
 var heavyImage = new Image();
-heavyImage.src = "horse_stop.gif";
+heavyImage.src = "images/horse_stop.gif";
 
 var heavyImage1 = new Image();
-heavyImage1.src = "rank_bg.png";
+heavyImage1.src = "images/rank_bg.png";
 
 });
 	//-->
