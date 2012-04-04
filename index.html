@@ -7,7 +7,8 @@
 	<meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="js/horse.js"></script>
+	<script type="text/javascript" src="js/runners.js"></script>
+	<script type="text/javascript" src="js/runner.js"></script>
 
 	<style>
 	body{font-size:12px;}
@@ -29,20 +30,16 @@
 
 	var runSeq = 0;
 
-	var horse = Array();
+	var arrRunner = Array();
 	
-	var h1 = new HORSE("lee");
-	alert(h1.getHorseInfo());
-
 function startRace(){
 
 
 		var cnt = Number( $("#playerCount").val() );
 		for(var i=0;i<cnt;i++){
-			horse[i] = 0;
+			arrRunner[i] = new runner("lee "+i);
+console.log(arrRunner[i].getImg().character);
 		}
-
-
 
 		$("#goRun").hide();
 
@@ -57,20 +54,20 @@ function startRace(){
 
 			$(".road .step").each(function(){
 
-				if(horse[ seq ] == null)
-					horse[ seq ] = 0;
+				if(arrRunner[ seq ] == null)
+					arrRunner[ seq ] = 0;
 
-				var myPoint = horse[ seq ];
+				var myPoint = arrRunner[ seq ];
 
 				var rnd = Math.floor( Math.random()*100%20 );
 
 				// 꼴지를 위한 보너스
-				if(horse[seq] != 0){
+				if(arrRunner[seq] != 0){
 
-					var my = horse[seq];
+					var my = arrRunner[seq];
 					var isMin = true;
-					for(var i=0;i<horse.length;i++){
-						if( my > horse[i] ) isMin = false;
+					for(var i=0;i<arrRunner.length;i++){
+						if( my > arrRunner[i] ) isMin = false;
 					}
 
 					if(isMin == true){
@@ -83,12 +80,12 @@ function startRace(){
 
 
 
-				horse[ seq ] = myPoint+rnd;
+				arrRunner[ seq ] = myPoint+rnd;
 
-				if(maxRoad <= horse[ seq ]) horse[ seq ] = maxRoad;
+				if(maxRoad <= arrRunner[ seq ]) arrRunner[ seq ] = maxRoad;
 
 
-				if( maxRoad <= horse[ seq ] ){
+				if( maxRoad <= arrRunner[ seq ] ){
 
 					var rankIn = false;
 
@@ -105,7 +102,7 @@ function startRace(){
 
 				}else{
 
-					$(this).animate( {width:horse[ seq ]},100);
+					$(this).animate( {width:arrRunner[ seq ]},100);
 				}
 
 				seq ++;
@@ -165,8 +162,8 @@ function setting(){
 
 	maxRoad = $("#stage").width()-100;
 
-	horse = null;
-	horse = Array();
+	arrRunner = null;
+	arrRunner = Array();
 
 	rank = null
 	rank = Array();
@@ -180,23 +177,23 @@ function setting(){
 
 	var cnt = Number( $("#playerCount").val() );
 
-	var line ="<div class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\"/></div><div class='step'></div><img class='horseImage' src=\"images/horse_stop.gif\" height=37/></div>";
+	//var line ="<div id='line"+cnt+"' class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\"/></div><div class='step'></div><img class='horseImage' src=\"images/horse_stop.gif\" height=37/></div>";
 
 	for(var i=0;i<cnt;i++){
-		$("#stage").append(line);
+		$("#stage").append("<div id='line"+i+"' class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\"/></div><div class='step'></div><img class='horseImage' src=\"images/horse_stop.gif\" height=37/></div>");
 
-		horse[i] = 0;
+		arrRunner[i] = 0;
 	}
 
 }
 
 $(document).ready(function(){
 
-var heavyImage = new Image();
-heavyImage.src = "images/horse_stop.gif";
-
-var heavyImage1 = new Image();
-heavyImage1.src = "images/rank_bg.png";
+	var heavyImage = new Image();
+	heavyImage.src = "images/horse_stop.gif";
+	
+	var heavyImage1 = new Image();
+	heavyImage1.src = "images/rank_bg.png";
 
 });
 	//-->
