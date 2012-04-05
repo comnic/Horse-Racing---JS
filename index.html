@@ -20,6 +20,17 @@
 
 
 	</style>
+	<script type="text/javascript">
+		$(document).ready(function(){
+	
+			var heavyImage = new Image();
+			heavyImage.src = "images/horse_stop.gif";
+			
+			var heavyImage1 = new Image();
+			heavyImage1.src = "images/rank_bg.png";
+	
+		});	
+	</script>
 
 	<script type="text/javascript">
 	<!--
@@ -32,18 +43,73 @@
 
 	var arrRunner = Array();
 	
-function startRace(){
+	var arrRunnerKind = ["Horse","Man","Woman","Monkey"];
+	
+	var arrRunnerName =[
+			"메가스타",
+			"단독질주",
+			"천하대장군",
+			"대승돌풍",
+			"천리광풍",
+			"폭풍가도",
+			"비바캐논",
+			"경쾌한질주",
+			"빅노이즈",
+			"비바캐논",
+			"스킵러너"			
+	];
+	
+	function setting(){
 
+
+		maxRoad = $("#stage").width()-100;
+
+		arrRunner = null;
+		arrRunner = Array();
+
+		rank = null
+		rank = Array();
+
+		if(interval != null)
+		clearInterval( interval );
+
+		interval = null;
+
+		$("#stage").html("");
+
+		var cnt = Number( $("#playerCount").val() );
+
+		//var line ="<div id='line"+cnt+"' class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\"/></div><div class='step'></div><img class='horseImage' src=\"images/horse_stop.gif\" height=37/></div>";
+
+		for(var i=0;i<cnt;i++){
+			idx = Math.floor(Math.random()*arrRunnerName.length);
+			idx2 = Math.floor(Math.random()*arrRunnerKind.length);
+			runnerName = arrRunnerName[idx];
+			runnerKind = arrRunnerKind[idx2];
+
+			if(Math.floor(Math.random()*5) == 1)
+				arrRunner[i] = new runner(runnerName);
+			else
+				arrRunner[i] = new runner(runnerName, runnerKind);
+			$("#stage").append("<div id='line"+i+"' class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\" value=\""+runnerName+"\"/></div><div class='step'></div><img id='runnerImage' class='horseImage' src=\"images/"+arrRunner[i].getCharImage()+"\" height=37/></div>");
+		}
+	}
+	
+	
+	
+	
+	function startRace(){
 
 		var cnt = Number( $("#playerCount").val() );
 		for(var i=0;i<cnt;i++){
-			arrRunner[i] = new runner("lee "+i);
+			//arrRunner[i] = new runner("lee "+i, "Horse");
+			$("#line"+i+" #runnerImage").attr("src", "images/" + arrRunner[i].getRunImage());
 console.log(arrRunner[i].getImg().character);
 		}
 
 		$("#goRun").hide();
 
-		$(".horseImage").attr("src","images/horse_run.gif");
+		//$(".horseImage").attr("src","images/horse_run.gif");
 
 		if(interval != null) return;
 
@@ -54,20 +120,20 @@ console.log(arrRunner[i].getImg().character);
 
 			$(".road .step").each(function(){
 
-				if(arrRunner[ seq ] == null)
-					arrRunner[ seq ] = 0;
+				if(arrRunner[ seq ].left == null)
+					arrRunner[ seq ].left = 0;
 
-				var myPoint = arrRunner[ seq ];
+				var myPoint = arrRunner[ seq ].left;
 
 				var rnd = Math.floor( Math.random()*100%20 );
 
 				// 꼴지를 위한 보너스
-				if(arrRunner[seq] != 0){
+				if(arrRunner[seq].left != 0){
 
-					var my = arrRunner[seq];
+					var my = arrRunner[seq].left;
 					var isMin = true;
 					for(var i=0;i<arrRunner.length;i++){
-						if( my > arrRunner[i] ) isMin = false;
+						if( my > arrRunner[i].left ) isMin = false;
 					}
 
 					if(isMin == true){
@@ -80,12 +146,12 @@ console.log(arrRunner[i].getImg().character);
 
 
 
-				arrRunner[ seq ] = myPoint+rnd;
+				arrRunner[ seq ].left = myPoint+rnd;
 
-				if(maxRoad <= arrRunner[ seq ]) arrRunner[ seq ] = maxRoad;
+				if(maxRoad <= arrRunner[ seq ].left) arrRunner[ seq ].left = maxRoad;
 
 
-				if( maxRoad <= arrRunner[ seq ] ){
+				if( maxRoad <= arrRunner[ seq ].left ){
 
 					var rankIn = false;
 
@@ -102,7 +168,7 @@ console.log(arrRunner[i].getImg().character);
 
 				}else{
 
-					$(this).animate( {width:arrRunner[ seq ]},100);
+					$(this).animate( {width:arrRunner[ seq ].left},100);
 				}
 
 				seq ++;
@@ -115,8 +181,10 @@ console.log(arrRunner[i].getImg().character);
 				clearInterval( interval );
 
 				interval = null;
-
-				$(".horseImage").attr("src","images/horse_stop.gif");
+				
+				for(var i=0;i< rank.length;i++){
+					$("#line"+i+" #runnerImage").attr("src","images/" + arrRunner[ i ].getStopImage());
+				}
 
 
 				setTimeout(function(){
@@ -157,45 +225,7 @@ console.log(arrRunner[i].getImg().character);
 
 }
 
-function setting(){
 
-
-	maxRoad = $("#stage").width()-100;
-
-	arrRunner = null;
-	arrRunner = Array();
-
-	rank = null
-	rank = Array();
-
-	if(interval != null)
-	clearInterval( interval );
-
-	interval = null;
-
-	$("#stage").html("");
-
-	var cnt = Number( $("#playerCount").val() );
-
-	//var line ="<div id='line"+cnt+"' class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\"/></div><div class='step'></div><img class='horseImage' src=\"images/horse_stop.gif\" height=37/></div>";
-
-	for(var i=0;i<cnt;i++){
-		$("#stage").append("<div id='line"+i+"' class='road'><div class='nameBox' style=\"width:50px;float:left;margin-right:10px;padding-top:10px;\" ><input type=\"text\" class=\"nameText\" style=\"width:50px;\"/></div><div class='step'></div><img class='horseImage' src=\"images/horse_stop.gif\" height=37/></div>");
-
-		arrRunner[i] = 0;
-	}
-
-}
-
-$(document).ready(function(){
-
-	var heavyImage = new Image();
-	heavyImage.src = "images/horse_stop.gif";
-	
-	var heavyImage1 = new Image();
-	heavyImage1.src = "images/rank_bg.png";
-
-});
 	//-->
 	</script>
 

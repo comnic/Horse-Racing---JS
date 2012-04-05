@@ -8,7 +8,7 @@ function HORSE(_name){
 	this.imgs = {
 			"character":"h001_char.gif",
 			"stop":"h001_char.gif",
-			"run":"h001_char.gif",
+			"run":"h001_run.gif",
 			"end":"h001_char.gif"
 			};
 
@@ -64,12 +64,50 @@ function DOG(_name){
 function MAN(_name){
 	console.log("MAN 생성");
 	this.name = _name;
-	this.kind = "h001";
+	this.kind = "m001";
 	this.imgs = {
 			"character":"m001_char.gif",
-			"stop":"h001_char.gif",
-			"run":"h001_char.gif",
-			"end":"h001_char.gif"
+			"stop":"m001_stop.gif",
+			"run":"m001_run.gif",
+			"end":"m001_end.gif"
+			};
+
+	this.speed = 0;
+	
+	this.getHorseInfo = function(){
+		return this.name;
+	};
+	this.getImageList = function(){ return this.imgs; };
+}
+
+function WOMAN(_name){
+	console.log("WOMAN 생성");
+	this.name = _name;
+	this.kind = "w001";
+	this.imgs = {
+			"character":"w001_char.gif",
+			"stop":"w001_stop.gif",
+			"run":"w001_run.gif",
+			"end":"w001_end.gif"
+			};
+
+	this.speed = 0;
+	
+	this.getHorseInfo = function(){
+		return this.name;
+	};
+	this.getImageList = function(){ return this.imgs; };
+}
+
+function MONKEY(_name){
+	console.log("Monkey 생성");
+	this.name = _name;
+	this.kind = "k001";
+	this.imgs = {
+			"character":"k001_char.gif",
+			"stop":"k001_stop.gif",
+			"run":"k001_run.gif",
+			"end":"k001_end.gif"
 			};
 
 	this.speed = 0;
